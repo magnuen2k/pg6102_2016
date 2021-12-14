@@ -6,6 +6,7 @@
         <module>api-gateway</module>
         <module>rest-dto</module>
         <module>trips</module>
+        <module>auth</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

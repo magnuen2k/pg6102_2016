@@ -11,12 +11,23 @@ services:
     depends_on:
       - discovery
 
+  rabbitmq:
+    image: "rabbitmq:3"
+
+  redis:
+    image: "redis:latest"
+
   discovery:
     image: "consul:1.8"
     ports:
       - "8500:8500" #Should not be in final
     environment:
       - CONSUL_LOCAL_CONFIG={"log_level":"info"}
+
+  postgres-auth:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   trips-postgres:
     image: "postgres:10"
@@ -30,3 +41,13 @@ services:
     depends_on:
       - api-gateway
       - discovery
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres-auth
+      - discovery
+      - api-gateway
+      - redis
