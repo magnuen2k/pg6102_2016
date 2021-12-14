@@ -10,9 +10,9 @@ spring:
     database: postgresql
     show-sql: true
     hibernate:
-      ddl-auto: validate
-#  rabbitmq:
-#    host: rabbitmq
+      ddl-auto: create-drop
+  rabbitmq:
+    host: rabbitmq
   mvc:
     throw-exception-if-no-handler-found: true
   cloud:

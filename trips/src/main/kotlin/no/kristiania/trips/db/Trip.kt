@@ -3,6 +3,8 @@ package no.kristiania.trips.db
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.ManyToOne
+import javax.validation.constraints.NotNull
 
 @Entity
 class Trip (
@@ -10,13 +12,25 @@ class Trip (
     @GeneratedValue
     var tripId: Long? = 0L,
 
-    var origin: String? = null,
+    @NotNull
+    @ManyToOne
+    var origin: Port? = null,
 
-    var destination: String? = null,
+    @NotNull
+    @ManyToOne
+    var destination: Port? = null,
 
-    var boat: String? = null,
+    @NotNull
+    @ManyToOne
+    var boat: Boat? = null,
 
-    var crew: String? = null,
+    @NotNull
+    var crew: Int? = null,
 
-    var status: String? = null
+    @NotNull
+    var status: Status? = null
 )
+
+enum class Status {
+    WARNING,
+}
