@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <name>pg6100_2016</name>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.5</version>
+    </parent>
+
+    <groupId>no.kristiania</groupId>
+    <artifactId>pg6100_2016</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <kotlin.version>1.5.31</kotlin.version>
+        <version.kotlin>1.5.31</version.kotlin>
+        <version.springcloud>2020.0.4</version.springcloud>
+        <version.springfox>3.0.0</version.springfox>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <version.java>11</version.java>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <fs>${file.separator}</fs>
+        <version.java>11</version.java>
+        <version.springboot>2.5.5</version.springboot>
+        <version.h2>1.4.197</version.h2>
+        <version.postgres>42.1.4</version.postgres>
+        <version.resteasy>3.1.3.Final</version.resteasy>
+        <version.restassured>4.2.0</version.restassured>
+        <version.surefire-failsafe>3.0.0-M4</version.surefire-failsafe>
+        <version.testcontainers>1.15.1</version.testcontainers>
+    </properties>
+
+    <!-- Dependencies are copied from class, but some versions had to be upgraded to run properly -->
+    <dependencies>
+        <!--
+               The Java API comes with the JDK itself.
+               On the other hand, the Kotlin API is treated like any other
+               third-party library, and we need to include it here as a dependency.
+               Unfortunately, the name of the supported JDK is in the id of
+               the artifact itself.
+               Why a problem? The day a new JDK version is used, would need to update
+               every single module :(
+               So, we add it by default to all submodules.
+          -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+        <!--
+            Looks like kotlin-reflect is now a requirement in Spring Boot 2.
+            So, as we use Kotlin in all modules, we add it here by default.
+        -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Kotlin dependencies -->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${version.kotlin}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <version>${version.kotlin}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>${version.kotlin}</version>
+            </dependency>
+
+            <!-- Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>28.1-jre</version>
+            </dependency>
+
+            <!-- Spring Cloud BOM -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${version.springcloud}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <!-- SpringFox for Swagger/OpenAPI -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${version.springfox}</version>
+            </dependency>
+
+            <dependency>
+                <!-- to mock web services -->
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-standalone</artifactId>
+                <version>2.27.2</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <!-- To use Docker from tests -->
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <!-- To support JUnit 5  -->
+                <groupId>org.testcontainers</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!--
+                If you have modules with both Kotlin and Java code, the documentation states
+                that it is important that the Kotlin compiler plugin is executed before the Java compiler.
+                See https://kotlinlang.org/docs/kotlin-docs.pdf
+                However, here we are not in such case. There is one exception though.
+                In some modules (eg SOAP) we do automatically generate Java source code before
+                the compilation phase.
+                To make it usable from Kotlin, we need to compile such Java code before the
+                Kotlin one. Note: that Java code does not call any Kotlin code.
+                Therefore, here we force the execution of the Java compiler BEFORE
+                the one of Kotlin.
+              -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <!-- see https://kotlinlang.org/docs/reference/using-maven.html -->
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <version>${version.kotlin}</version>
+                    <!--
+                        Kotlin has a major "limitation" that all classes are final by default.
+                        Someone call it a "feature", others (like me) call it a "design flaw".
+                        See more at: https://discuss.kotlinlang.org/t/classes-final-by-default/166/77
+                        Why is it a problem? for example, it does not play well with all major frameworks
+                        out there like JPA, Spring, mocking, etc, as they require to create proxy
+                        classes that extend the classes you write.
+                        So here we have to use special plugins to bypass this Kotlin "feature"...
+                    -->
+                    <configuration>
+                        <jvmTarget>${version.java}</jvmTarget>
+                        <compilerPlugins>
+                            <plugin>spring</plugin>
+                            <plugin>jpa</plugin>
+                        </compilerPlugins>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${version.kotlin}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
+                            <version>${version.kotlin}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <configuration>
+                                <sourceDirs>
+                                    <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                                </sourceDirs>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>test-compile</id>
+                            <goals>
+                                <goal>test-compile</goal>
+                            </goals>
+                            <configuration>
+                                <sourceDirs>
+                                    <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/test/java</sourceDir>
+                                </sourceDirs>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <!-- Need to create self-executable uber/fat jars -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${version.springboot}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--<plugin>
+                    &lt;!&ndash; For manual handling of generated resources &ndash;&gt;
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>-->
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+</project>
