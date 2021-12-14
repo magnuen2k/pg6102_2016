@@ -25,7 +25,7 @@ class Trip (
     var boat: Boat? = null,
 
     @NotNull
-    var crew: Int? = null,
+    var crew: Int? = 0,
 
     @NotNull
     var status: Status? = null
