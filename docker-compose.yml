@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    depends_on:
+      - discovery
+
+  discovery:
+    image: "consul:1.8"
+    ports:
+      - "8500:8500" #Should not be in final
+    environment:
+      - CONSUL_LOCAL_CONFIG={"log_level":"info"}
+
+  trips-postgres:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+  trips:
+    build:
+      context: ./trips
+      dockerfile: Dockerfile
+    depends_on:
+      - api-gateway
+      - discovery
