@@ -34,4 +34,6 @@ class RestAPI(
 
         return RestResponseFactory.payload(200, booking)
     }
+
+    // Get trips from user
 }

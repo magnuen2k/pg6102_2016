@@ -23,8 +23,8 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
             }.and()
             .authorizeRequests()
             .antMatchers("/swagger*/**", "/v3/api-docs", "/actuator/**").permitAll()
-            .antMatchers("/api/booking/**").permitAll()
-            /*.access("hasRole('USER')")*/
+            .antMatchers("/api/booking/**")
+            .access("hasRole('USER')")
             .anyRequest().denyAll()
             .and()
             .csrf().disable()
