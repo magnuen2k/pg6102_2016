@@ -81,4 +81,8 @@ class RestAPI (
             RestResponseFactory.userFailure("Trip with id: $id was not deleted")
         }
     }
+
+    // TODO return boats and ports to select in trip
+    // Get boats
+    // Get ports
 }
