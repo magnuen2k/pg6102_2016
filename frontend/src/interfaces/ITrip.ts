@@ -1,5 +1,5 @@
 export interface ITrip {
-  tripId: number;
+  tripId?: number;
   origin: string;
   destination: string;
   boat: string;
