@@ -28,7 +28,13 @@ class Trip (
     var crew: Int? = 0,
 
     @NotNull
-    var status: Status? = null
+    var passengers: Int? = 0,
+
+    @NotNull
+    var status: Status? = null,
+
+    @NotNull
+    var tripYear: Int? = null
 )
 
 enum class Status {

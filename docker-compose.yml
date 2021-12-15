@@ -34,6 +34,11 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
+  booking-postgres:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
   trips:
     build:
       context: ./trips
@@ -41,6 +46,18 @@ services:
     depends_on:
       - api-gateway
       - discovery
+      - rabbitmq
+      - trips-postgres
+
+  booking:
+    build:
+      context: ./booking
+      dockerfile: Dockerfile
+    depends_on:
+      - api-gateway
+      - discovery
+      - rabbitmq
+      - booking-postgres
 
   auth:
     build:

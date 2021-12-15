@@ -29,25 +29,26 @@ class FakeDataService (
         portRepository.save(p2)
 
         // To test pagination
-        createTrip(b, 2, p2, p1, Status.WARNING)
-        createTrip(b, 4, p2, p1, Status.WARNING)
-        createTrip(b, 5, p2, p1, Status.WARNING)
-        createTrip(b, 6, p2, p1, Status.WARNING)
-        createTrip(b, 5, p2, p1, Status.WARNING)
-        createTrip(b, 6, p2, p1, Status.WARNING)
-        createTrip(b, 2, p2, p1, Status.WARNING)
-        createTrip(b, 3, p2, p1, Status.WARNING)
-        createTrip(b, 1, p2, p1, Status.WARNING)
-        createTrip(b, 2, p2, p1, Status.WARNING)
+        createTrip(b, 2, p2, p1, Status.WARNING, 2001)
+        createTrip(b, 4, p2, p1, Status.WARNING, 2005)
+        createTrip(b, 5, p2, p1, Status.WARNING, 2015)
+        createTrip(b, 6, p2, p1, Status.WARNING, 2021)
+        createTrip(b, 5, p2, p1, Status.WARNING, 2020)
+        createTrip(b, 6, p2, p1, Status.WARNING, 2019)
+        createTrip(b, 2, p2, p1, Status.WARNING, 2018)
+        createTrip(b, 3, p2, p1, Status.WARNING, 2020)
+        createTrip(b, 1, p2, p1, Status.WARNING, 2008)
+        createTrip(b, 2, p2, p1, Status.WARNING, 2009)
     }
 
-    fun createTrip(b: Boat, crew: Int, p2: Port, p1: Port, status: Status) {
+    fun createTrip(b: Boat, crew: Int, p2: Port, p1: Port, status: Status, tripYear: Int) {
         val t = Trip()
         t.boat = b
         t.crew = crew
         t.destination = p2
         t.origin = p1
         t.status = status
+        t.tripYear = tripYear
 
         tripRepository.save(t)
     }
