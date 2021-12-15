@@ -4,8 +4,12 @@ import io.swagger.annotations.ApiOperation
 import no.kristiania.restdto.PageDto
 import no.kristiania.restdto.RestResponseFactory
 import no.kristiania.restdto.WrappedResponse
+import no.kristiania.trips.db.Boat
+import no.kristiania.trips.db.Port
 import no.kristiania.trips.db.Trip
 import no.kristiania.trips.dto.TripDto
+import no.kristiania.trips.service.BoatService
+import no.kristiania.trips.service.PortService
 import no.kristiania.trips.service.TripService
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.FanoutExchange
@@ -19,6 +23,8 @@ import java.util.concurrent.TimeUnit
 @RequestMapping("/api/trips")
 class RestAPI (
     private val tripService: TripService,
+    private val boatService: BoatService,
+    private val portService: PortService,
     private val rabbit: RabbitTemplate,
     private val fanout: FanoutExchange
     ) {
@@ -82,7 +88,15 @@ class RestAPI (
         }
     }
 
-    // TODO return boats and ports to select in trip
-    // Get boats
-    // Get ports
+    @ApiOperation("GET All boats")
+    @GetMapping("/boats")
+    fun getBoats(): ResponseEntity<WrappedResponse<MutableIterable<Boat>>> {
+        return RestResponseFactory.payload(200, boatService.getBoats())
+    }
+
+    @ApiOperation("GET All Ports")
+    @GetMapping("/ports")
+    fun getPorts(): ResponseEntity<WrappedResponse<MutableIterable<Port>>> {
+        return RestResponseFactory.payload(200, portService.getPorts())
+    }
 }
