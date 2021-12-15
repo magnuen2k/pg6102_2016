@@ -1,19 +1,22 @@
 package no.kristiania.trips.dto
 
 import io.swagger.annotations.ApiModelProperty
+import no.kristiania.trips.db.Boat
+import no.kristiania.trips.db.Port
+import no.kristiania.trips.db.Status
 
 class TripDto (
     @ApiModelProperty("Id of the trip")
     var tripId: Long? = 0L,
 
     @ApiModelProperty("")
-    var origin: String? = null,
+    var origin: Port? = null,
 
     @ApiModelProperty("")
-    var destination: String? = null,
+    var destination: Port? = null,
 
     @ApiModelProperty("")
-    var boat: String? = null,
+    var boat: Boat? = null,
 
     @ApiModelProperty("")
     var crew: Int? = 0,
@@ -22,6 +25,8 @@ class TripDto (
     var passengers: Int? = 0,
 
     @ApiModelProperty("")
-    var tripYear: Int? = null
+    var tripYear: Int? = null,
 
+    @ApiModelProperty("")
+    var status: Status? = null
 )
