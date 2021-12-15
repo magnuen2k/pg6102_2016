@@ -9,11 +9,12 @@ import DropDownOptions from "../DropDownOptions";
 import { IResponse } from "../../interfaces/IResponse";
 import ResponseView from "../ResponseView";
 import { handleError } from "../../util/HandleError";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  origin: "",
-  destination: "",
-  boat: "",
+  origin: { name: "", maxBoats: 0 },
+  destination: { name: "", maxBoats: 0 },
+  boat: { name: "", length: 0, builder: "", crewSize: 0, maxPassengers: 0 },
   crew: 0,
   passengers: 0,
   tripYear: 0,
@@ -25,6 +26,8 @@ const TripForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [boats, setBoats] = useState<IBoat[]>();
   const [ports, setPorts] = useState<IPort[]>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getBoats();
@@ -66,35 +69,33 @@ const TripForm = () => {
 
     // Clear input form
     setTrip(initialState);
-  };
-
-  const handleBoat = (e: any) => {
-    if (e.target.value === "default") {
-      setTrip({ ...trip, boat: "No boat" });
-    } else {
-      setTrip({ ...trip, boat: e.target.value });
-    }
-  };
-
-  const handlePorts = (e: any, port: string) => {
-    if (port === "destination") {
-      if (e.target.value === "default") {
-        setTrip({ ...trip, destination: "No port" });
-      } else {
-        setTrip({ ...trip, destination: e.target.value });
-      }
-    } else {
-      if (e.target.value === "default") {
-        setTrip({ ...trip, origin: "No port" });
-      } else {
-        setTrip({ ...trip, origin: e.target.value });
-      }
-    }
+    navigate("/");
   };
 
   if (!boats || !ports) {
     return <Loading />;
   }
+
+  const handleBoat = (e: any) => {
+    // @ts-ignore
+    setTrip({ ...trip, boat: boats.find((b) => b.name === e.target.value) });
+  };
+
+  const handlePorts = (e: any, port: string) => {
+    if (port === "destination") {
+      setTrip({
+        ...trip,
+        // @ts-ignore
+        destination: ports.find((p) => p.name === e.target.value),
+      });
+    } else {
+      setTrip({
+        ...trip,
+        // @ts-ignore
+        origin: ports.find((p) => p.name === e.target.value),
+      });
+    }
+  };
 
   return (
     <div className="mb-2 mt-5">

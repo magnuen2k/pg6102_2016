@@ -20,9 +20,9 @@ const TripItem: FC<ITrip> = ({
   return (
     <Card>
       <Card.Header>{tripId}</Card.Header>
-      <Card.Text>{origin}</Card.Text>
-      <Card.Text>{destination}</Card.Text>
-      <Card.Text>{boat}</Card.Text>
+      <Card.Text>{origin.name}</Card.Text>
+      <Card.Text>{destination.name}</Card.Text>
+      <Card.Text>{boat.name}</Card.Text>
       <Card.Text>{crew}</Card.Text>
       <Card.Text>{passengers}</Card.Text>
       <Card.Text>{tripYear}</Card.Text>

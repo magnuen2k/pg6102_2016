@@ -47,9 +47,17 @@ const BookTrip: FC = () => {
           {user ? (
             <>
               <h1>Trip booking</h1>
-              <div>From port: {trip.origin}</div>
-              <div>To port: {trip.destination}</div>
-              <div>Boat: {trip.boat}</div>
+              <div>
+                From port: {trip.origin.name} (Max {trip.origin.maxBoats} boats)
+              </div>
+              <div>
+                To port: {trip.destination.name} (Max{" "}
+                {trip.destination.maxBoats} boats)
+              </div>
+              <div>
+                Boat: {trip.boat.name} (Max {trip.boat.maxPassengers}{" "}
+                passengers, Max {trip.boat.crewSize} crew)
+              </div>
               <div>Year created: {trip.tripYear}</div>
               <div>Choose number of crew: {trip.crew}</div>
               <div>Choose number of passengers: {trip.passengers}</div>

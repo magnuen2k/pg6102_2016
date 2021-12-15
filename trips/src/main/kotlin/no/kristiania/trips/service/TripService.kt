@@ -66,16 +66,16 @@ class TripService (
             throw IllegalStateException("Not provided proper data")
         }
 
-        val boat = boatRepository.findByIdOrNull(trip.boat!!)
-        val destination = portRepository.findByIdOrNull(trip.destination!!)
-        val origin =  portRepository.findByIdOrNull(trip.origin!!)
+        /*val boat = boatRepository.findByIdOrNull(trip.boat!!.name!!)
+        val destination = portRepository.findByIdOrNull(trip.destination!!.name!!)
+        val origin =  portRepository.findByIdOrNull(trip.origin!!.name!!)*/
 
         // TODO Check if boat has space
 
         val t = Trip()
-        t.origin = origin
-        t.destination = destination
-        t.boat = boat
+        t.origin = trip.origin
+        t.destination = trip.destination
+        t.boat = trip.boat
         t.crew = trip.crew
         t.passengers = trip.passengers
         t.tripYear = trip.tripYear
