@@ -4,6 +4,7 @@ import { Button, Card } from "react-bootstrap";
 import { UserContext } from "../../contexts/UserContext";
 import { UserContextType } from "../../types/UserContextType";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const TripItem: FC<ITrip> = ({
   tripId,
@@ -16,20 +17,6 @@ const TripItem: FC<ITrip> = ({
 }) => {
   const { user } = useContext(UserContext) as UserContextType;
 
-  const bookTrip = async () => {
-    console.log("USER: " + user?.name + ", want to book trip: " + tripId);
-
-    let res;
-
-    try {
-      res = await axios.post("/api/booking", { userId: user?.name, tripId });
-    } catch (e: any) {
-      console.log("ERROR");
-    }
-
-    console.log(res?.data.code);
-  };
-
   return (
     <Card>
       <Card.Header>{tripId}</Card.Header>
@@ -40,7 +27,13 @@ const TripItem: FC<ITrip> = ({
       <Card.Text>{passengers}</Card.Text>
       <Card.Text>{tripYear}</Card.Text>
 
-      {user ? <Button onClick={bookTrip}>BOOK</Button> : ""}
+      {user ? (
+        <Link to={`/trips/booking-details/${tripId}`}>
+          <Button>BOOK</Button>
+        </Link>
+      ) : (
+        ""
+      )}
     </Card>
   );
 };

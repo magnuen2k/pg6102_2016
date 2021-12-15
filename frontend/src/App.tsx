@@ -1,9 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Auth, Home, PlanTrip } from "./pages";
+import { Auth, BookTrip, Home, NotFound, PlanTrip, Trips } from "./pages";
 import Navigation from "./components/Navgation";
-import Trips from "./pages/Trips";
 
 const App = () => {
   return (
@@ -15,7 +14,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/trips/plan" element={<PlanTrip />} />
+          <Route path="/trips/booking-details/:id" element={<BookTrip />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

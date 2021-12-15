@@ -84,7 +84,17 @@ class TripService (
 
     }
 
-    fun deleteTrip(id: Long) : Boolean{
+    fun getTripById(id: Long): TripDto? {
+        val trip = tripRepository.findByIdOrNull(id)
+
+        if(trip != null) {
+            return DtoConverter.transform(trip)
+        }
+
+        return null
+    }
+
+    fun deleteTrip(id: Long) : Boolean {
         return if (tripRepository.existsById(id)) {
             tripRepository.deleteById(id)
             // TODO Notify about trip deletion to AMQP

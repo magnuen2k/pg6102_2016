@@ -23,9 +23,14 @@ const Navigation = () => {
               Trips
             </Nav.Link>
             {user ? (
-              <Nav.Link as={Link} to="/trips/plan">
-                Plan a trip
-              </Nav.Link>
+              <>
+                <Nav.Link as={Link} to="/trips/plan">
+                  Plan a trip
+                </Nav.Link>
+                <Nav.Link as={Link} to="/trips/mytrips">
+                  My Booked Trips
+                </Nav.Link>
+              </>
             ) : (
               ""
             )}

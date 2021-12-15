@@ -88,6 +88,17 @@ class RestAPI (
         }
     }
 
+    @ApiOperation("GET a trip by ID")
+    @GetMapping("/{id}")
+    fun getTripById(@PathVariable("id") id: Long): ResponseEntity<WrappedResponse<TripDto>> {
+        val trip = tripService.getTripById(id)
+        return if(trip != null) {
+            RestResponseFactory.payload(200, trip)
+        } else {
+            RestResponseFactory.userFailure("No ID or trip with provided id")
+        }
+    }
+
     @ApiOperation("GET All boats")
     @GetMapping("/boats")
     fun getBoats(): ResponseEntity<WrappedResponse<MutableIterable<Boat>>> {

@@ -8,6 +8,7 @@ import axios from "axios";
 import DropDownOptions from "../DropDownOptions";
 import { IResponse } from "../../interfaces/IResponse";
 import ResponseView from "../ResponseView";
+import { handleError } from "../../util/HandleError";
 
 const initialState = {
   origin: "",
@@ -51,7 +52,7 @@ const TripForm = () => {
       res = await axios.put("/api/trips", trip);
       setIsLoading(true);
     } catch (e: any) {
-      //handleError(e, setIsLoading, setResponse);
+      handleError(e, setIsLoading, setResponse);
     }
 
     // If POST successful, display message in popup
@@ -66,10 +67,6 @@ const TripForm = () => {
     // Clear input form
     setTrip(initialState);
   };
-
-  if (!boats || !ports) {
-    return <Loading />;
-  }
 
   const handleBoat = (e: any) => {
     if (e.target.value === "default") {
@@ -94,6 +91,10 @@ const TripForm = () => {
       }
     }
   };
+
+  if (!boats || !ports) {
+    return <Loading />;
+  }
 
   return (
     <div className="mb-2 mt-5">
