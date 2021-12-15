@@ -40,7 +40,7 @@ const TripItem: FC<ITrip> = ({
       <Card.Text>{passengers}</Card.Text>
       <Card.Text>{tripYear}</Card.Text>
 
-      <Button onClick={bookTrip}>BOOK</Button>
+      {user ? <Button onClick={bookTrip}>BOOK</Button> : ""}
     </Card>
   );
 };
