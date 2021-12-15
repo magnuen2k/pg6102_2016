@@ -30,8 +30,8 @@ class RestAPI (
         return tripService.getTrips()
     }
 
-    @ApiOperation("POST a new planned trip")
-    @PostMapping
+    @ApiOperation("PUT a new planned trip")
+    @PutMapping
     fun addTrip(@RequestBody tripDto: TripDto): ResponseEntity<WrappedResponse<Void>> {
         val response = try {
             tripService.addTrip(tripDto)
@@ -39,10 +39,18 @@ class RestAPI (
             return RestResponseFactory.userFailure("Wrong data provided", 400)
         }
 
-        log.info("SHOULD BE 11: ${response.tripId}")
-
         rabbit.convertAndSend(fanout.name, "", response.tripId!!)
 
         return RestResponseFactory.noPayload(201)
+    }
+
+    @ApiOperation("DELETE a trip by id")
+    @DeleteMapping("/{id}")
+    fun deleteTrip(@PathVariable("id") id: Long): ResponseEntity<WrappedResponse<Void>> {
+        return if (tripService.deleteTrip(id)) {
+            RestResponseFactory.noPayload(204)
+        } else {
+            RestResponseFactory.userFailure("Trip with id: $id was not deleted")
+        }
     }
 }

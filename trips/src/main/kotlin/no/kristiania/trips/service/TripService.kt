@@ -45,4 +45,14 @@ class TripService (
         return tripRepository.save(t)
 
     }
+
+    fun deleteTrip(id: Long) : Boolean{
+        return if (tripRepository.existsById(id)) {
+            tripRepository.deleteById(id)
+            // TODO Notify about trip deletion to AMQP
+            true
+        } else {
+            false
+        }
+    }
 }
