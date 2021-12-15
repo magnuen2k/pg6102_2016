@@ -1,11 +1,13 @@
 package no.kristiania.booking.service
 
+import no.kristiania.booking.DtoConverter
 import no.kristiania.booking.MOMListener
 import no.kristiania.booking.db.Booking
 import no.kristiania.booking.db.Status
 import no.kristiania.booking.dto.BookingDto
 import no.kristiania.booking.repository.BookingRepository
 import org.slf4j.LoggerFactory
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -36,6 +38,13 @@ class BookingService(
         // Broadcast to trip api that trip has started
 
         return b
+    }
+
+    fun getBookingById(id: Long) : BookingDto? {
+        val booking = bookingRepository.findByIdOrNull(id) ?: return null
+
+        return DtoConverter.transform(booking)
+
     }
 
 }
