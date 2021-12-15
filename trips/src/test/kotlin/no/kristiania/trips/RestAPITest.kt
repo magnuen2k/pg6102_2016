@@ -101,13 +101,10 @@ class RestAPITest {
 
     @Test
     fun testPutNewTrip() {
-
-        // TODO Could put new boat and ports to repos here for safety
-
         val body = JSONObject()
-        body["origin"] = "port2"
-        body["destination"] = "port1"
-        body["boat"] = "test"
+        body["origin"] = createPort(20)
+        body["destination"] = createPort(90)
+        body["boat"] = createBoat("foo", 4, 34)
         body["crew"] = 3
         body["passengers"] = 10
 
@@ -122,12 +119,7 @@ class RestAPITest {
 
     @Test
     fun testDeleteTrip() {
-
-        // PUT IN DIFFERENT FUNCTION
-        val b = createBoat("test", 15, 21, "testy")
-        val p1 = createPort(200, "port1")
-        val p2 = createPort(140, "port2")
-        val t = createTrip(2020, 20, 5, b, p2, p1)
+        val t = getTripWithRandomBoatAndPort()
 
         RestAssured.given()
             .header("Content-Type", "application/json")
@@ -136,19 +128,59 @@ class RestAPITest {
             .statusCode(204)
     }
 
-    fun createPort(maxBoats: Int, name: String) : Port {
+    @Test
+    fun testGetTripById() {
+        val t = getTripWithRandomBoatAndPort()
+
+        RestAssured.given()
+            .header("Content-Type", "application/json")
+            .get("/api/trips/${t.tripId}")
+            .then()
+            .statusCode(200)
+    }
+
+    @Test
+    fun testGetAllBoats() {
+        val b = createBoat("foo", 2, 3)
+
+        RestAssured.given()
+            .header("Content-Type", "application/json")
+            .get("/api/trips/boats")
+            .then()
+            .statusCode(200)
+    }
+
+    @Test
+    fun testGetAllPorts() {
+        val b = createPort(30)
+
+        RestAssured.given()
+            .header("Content-Type", "application/json")
+            .get("/api/trips/ports")
+            .then()
+            .statusCode(200)
+    }
+
+    fun getTripWithRandomBoatAndPort() : Trip {
+        val b = createBoat("test", 15, 21)
+        val p1 = createPort(200)
+        val p2 = createPort(140)
+        return createTrip(2020, 20, 5, b, p2, p1)
+    }
+
+    fun createPort(maxBoats: Int) : Port {
         val p = Port()
         p.maxBoats = maxBoats
-        p.name = name
+        p.name = "port-" + System.currentTimeMillis()
         return portRepository.save(p)
     }
 
-    fun createBoat(builder: String, crewSize: Int, length: Int, name: String) : Boat {
+    fun createBoat(builder: String, crewSize: Int, length: Int) : Boat {
         val b = Boat()
         b.builder = builder
         b.crewSize = crewSize
         b.length = length
-        b.name = name
+        b.name = "boat-" + System.currentTimeMillis()
         return boatRepository.save(b)
     }
 
