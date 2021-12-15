@@ -70,6 +70,8 @@ class TripService (
         val destination = portRepository.findByIdOrNull(trip.destination!!)
         val origin =  portRepository.findByIdOrNull(trip.origin!!)
 
+        // TODO Check if boat has space
+
         val t = Trip()
         t.origin = origin
         t.destination = destination

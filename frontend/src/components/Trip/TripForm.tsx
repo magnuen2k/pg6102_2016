@@ -1,7 +1,13 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Button, Form, FormControl } from "react-bootstrap";
-import { ITrip } from "../../interfaces/ITrip";
 import Loading from "../Loading";
+import { ITrip } from "../../interfaces/ITrip";
+import { IBoat } from "../../interfaces/IBoat";
+import { IPort } from "../../interfaces/IPort";
+import axios from "axios";
+import DropDownOptions from "../DropDownOptions";
+import { IResponse } from "../../interfaces/IResponse";
+import ResponseView from "../ResponseView";
 
 const initialState = {
   origin: "",
@@ -14,32 +20,79 @@ const initialState = {
 
 const TripForm = () => {
   const [trip, setTrip] = useState<ITrip>(initialState);
-  //const [response, setResponse] = useState<IResponse>();
+  const [response, setResponse] = useState<IResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [boats, setBoats] = useState<IBoat[]>();
+  const [ports, setPorts] = useState<IPort[]>();
 
-  const addNewPlayer = async () => {
+  useEffect(() => {
+    getBoats();
+    getPorts();
+  }, []);
+
+  const getBoats = async () => {
+    const res = await axios.get("/api/trips/boats");
+    //const boatNames = res.data.data.map
+    setBoats(res.data.data);
+  };
+
+  const getPorts = async () => {
+    const res = await axios.get("/api/trips/ports");
+    setPorts(res.data.data);
+  };
+
+  const planTrip = async () => {
     // Add trip to database
     let res;
 
     // Try to POST new trip, else handle error
     try {
-      //res = await addPlayer(trip);
+      console.log(trip);
+      res = await axios.put("/api/trips", trip);
       setIsLoading(true);
     } catch (e: any) {
       //handleError(e, setIsLoading, setResponse);
     }
 
     // If POST successful, display message in popup
-    /*if (res && res.status === 201) {
+    if (res && res.status === 201) {
       setIsLoading(false);
       setResponse({
-        message: "Player added successfully",
+        message: "Trip planned successfully",
         statusCode: res.status,
       });
-    }*/
+    }
 
     // Clear input form
     setTrip(initialState);
+  };
+
+  if (!boats || !ports) {
+    return <Loading />;
+  }
+
+  const handleBoat = (e: any) => {
+    if (e.target.value === "default") {
+      setTrip({ ...trip, boat: "No boat" });
+    } else {
+      setTrip({ ...trip, boat: e.target.value });
+    }
+  };
+
+  const handlePorts = (e: any, port: string) => {
+    if (port === "destination") {
+      if (e.target.value === "default") {
+        setTrip({ ...trip, destination: "No port" });
+      } else {
+        setTrip({ ...trip, destination: e.target.value });
+      }
+    } else {
+      if (e.target.value === "default") {
+        setTrip({ ...trip, origin: "No port" });
+      } else {
+        setTrip({ ...trip, origin: e.target.value });
+      }
+    }
   };
 
   return (
@@ -47,27 +100,47 @@ const TripForm = () => {
       <Form>
         <Form.Group>
           <FormControl
-            placeholder="Origin"
-            value={trip.origin}
-            onChange={(e) => setTrip({ ...trip, origin: e.target.value })}
+            type="number"
+            placeholder="Trip Year"
+            value={trip.tripYear}
+            onChange={(e) =>
+              setTrip({ ...trip, tripYear: parseInt(e.target.value) })
+            }
           />
         </Form.Group>
         <Form.Group>
-          <FormControl
-            placeholder="Destination"
-            value={trip.destination}
-            onChange={(e) => setTrip({ ...trip, destination: e.target.value })}
+          <DropDownOptions
+            handleChange={handleBoat}
+            options={boats.map((b: IBoat) => {
+              return b.name;
+            })}
           />
         </Form.Group>
-        <Button onClick={addNewPlayer}>Plan trip</Button>
+        <Form.Group>
+          <DropDownOptions
+            handleChange={(e) => handlePorts(e, "destination")}
+            options={ports.map((p: IPort) => {
+              return p.name;
+            })}
+          />
+        </Form.Group>
+        <Form.Group>
+          <DropDownOptions
+            handleChange={(e) => handlePorts(e, "origin")}
+            options={ports.map((p: IPort) => {
+              return p.name;
+            })}
+          />
+        </Form.Group>
+        <Button onClick={planTrip}>Plan trip</Button>
       </Form>
       {isLoading && <Loading />}
-      {/*{response && (
+      {response && (
         <ResponseView
           message={response.message}
           statusCode={response.statusCode}
         />
-      )}*/}
+      )}
     </div>
   );
 };
