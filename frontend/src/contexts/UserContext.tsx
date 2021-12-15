@@ -13,9 +13,14 @@ export const UserProvider: FC = ({ children }) => {
   }, []);
 
   const fetchData = async () => {
-    await axios.get("api/auth/user").then((res) => {
-      setUser(res.data);
-    });
+    try {
+      await axios.get("api/auth/user").then((res) => {
+        setUser(res.data);
+      });
+    } catch (e: any) {
+      // @ts-ignore
+      setUser(null);
+    }
   };
 
   const updateUser = (u: IUser | null) => {
