@@ -1,6 +1,7 @@
 package no.kristiania.trips
 
 import io.swagger.annotations.ApiOperation
+import no.kristiania.restdto.PageDto
 import no.kristiania.restdto.RestResponseFactory
 import no.kristiania.restdto.WrappedResponse
 import no.kristiania.trips.db.Trip
@@ -9,8 +10,10 @@ import no.kristiania.trips.service.TripService
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.http.CacheControl
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping("/api/trips")
@@ -24,10 +27,35 @@ class RestAPI (
         private val log = LoggerFactory.getLogger(RestAPI::class.java)
     }
 
-    @ApiOperation("GET trips")
+   /* @ApiOperation("GET trips")
     @GetMapping
     fun getAll(): MutableIterable<Trip> {
         return tripService.getTrips()
+    }*/
+
+    @ApiOperation("Retrieve all trips")
+    @GetMapping
+    fun getTrips(
+        @RequestParam("keysetId", required = false) keysetId: Long?,
+        @RequestParam("keysetYear", required = false) keysetYear: Int?
+    ): ResponseEntity<WrappedResponse<PageDto<TripDto>>> {
+
+        val page = PageDto<TripDto>()
+
+        val n = 4
+        val trips = tripService.getNextPage(n, keysetId, keysetYear)
+        page.list = trips
+
+        if(trips.size == n) {
+            val last = trips.last()
+            page.next = "/api/trips?keysetId=${last.tripId}&keysetYear=${last.tripYear}"
+        }
+
+        return ResponseEntity
+            .status(200)
+            .cacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES).cachePublic())
+            .body(WrappedResponse(200, page))
+
     }
 
     @ApiOperation("PUT a new planned trip")
