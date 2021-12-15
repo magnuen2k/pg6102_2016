@@ -78,3 +78,8 @@ services:
       - discovery
       - api-gateway
       - redis
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile

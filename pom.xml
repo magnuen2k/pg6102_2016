@@ -9,6 +9,7 @@
         <module>auth</module>
         <module>booking</module>
         <module>e2e-tests</module>
+        <module>frontend</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
