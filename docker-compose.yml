@@ -49,7 +49,17 @@ services:
       - rabbitmq
       - trips-postgres
 
-  booking:
+  booking_1:
+    build:
+      context: ./booking
+      dockerfile: Dockerfile
+    depends_on:
+      - api-gateway
+      - discovery
+      - rabbitmq
+      - booking-postgres
+
+  booking_2:
     build:
       context: ./booking
       dockerfile: Dockerfile

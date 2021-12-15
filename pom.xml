@@ -8,6 +8,7 @@
         <module>trips</module>
         <module>auth</module>
         <module>booking</module>
+        <module>e2e-tests</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
