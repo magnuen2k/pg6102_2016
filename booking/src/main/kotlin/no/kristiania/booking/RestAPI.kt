@@ -26,6 +26,5 @@ class RestAPI(
         val booking = bookingService.startTrip(bookingDto)
 
         return RestResponseFactory.created(URI.create("/api/booking/${booking.id}"))
-
     }
 }

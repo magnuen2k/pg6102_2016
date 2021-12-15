@@ -20,7 +20,11 @@ class UserService (
     }
 
     fun getUserId(userId: String) : User? {
-        return userRepository.findWithLock(userId)
+        return if(userRepository.existsById(userId)) {
+            userRepository.findWithLock(userId)
+        } else {
+            createUser(userId)
+        }
     }
 
 

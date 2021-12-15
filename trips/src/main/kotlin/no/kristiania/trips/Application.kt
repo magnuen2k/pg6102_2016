@@ -1,5 +1,6 @@
 package no.kristiania.trips
 
+import org.springframework.amqp.core.FanoutExchange
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -24,9 +25,14 @@ class Application {
     private fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
             .title("API for Trips")
-            .description("REST service to manage booked trips")
+            .description("REST service to manage planned trips")
             .version("1.0")
             .build()
+    }
+
+    @Bean
+    fun fanout(): FanoutExchange {
+        return FanoutExchange("trip-creation")
     }
 }
 

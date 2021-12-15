@@ -14,4 +14,12 @@ class TripService (
     fun getTrip(tripId: Long) : Trip? {
         return tripRepository.findWithLock(tripId)
     }
+
+    fun registerTrip(tripId: Long): Boolean {
+        // Check if trip exists first!!
+        val trip = Trip()
+        trip.id = tripId
+        tripRepository.save(trip)
+        return true
+    }
 }

@@ -6,12 +6,23 @@ import no.kristiania.restdto.WrappedResponse
 import no.kristiania.trips.db.Trip
 import no.kristiania.trips.dto.TripDto
 import no.kristiania.trips.service.TripService
+import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.FanoutExchange
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/trips")
-class RestAPI (private val tripService: TripService) {
+class RestAPI (
+    private val tripService: TripService,
+    private val rabbit: RabbitTemplate,
+    private val fanout: FanoutExchange
+    ) {
+
+    companion object{
+        private val log = LoggerFactory.getLogger(RestAPI::class.java)
+    }
 
     @ApiOperation("GET trips")
     @GetMapping
@@ -19,13 +30,19 @@ class RestAPI (private val tripService: TripService) {
         return tripService.getTrips()
     }
 
-    @ApiOperation("POST a new trip")
+    @ApiOperation("POST a new planned trip")
     @PostMapping
     fun addTrip(@RequestBody tripDto: TripDto): ResponseEntity<WrappedResponse<Void>> {
-        val response = tripService.addTrip(tripDto)
-        if(!response) {
+        val response = try {
+            tripService.addTrip(tripDto)
+        } catch (e: IllegalStateException) {
             return RestResponseFactory.userFailure("Wrong data provided", 400)
         }
+
+        log.info("SHOULD BE 11: ${response.tripId}")
+
+        rabbit.convertAndSend(fanout.name, "", response.tripId!!)
+
         return RestResponseFactory.noPayload(201)
     }
 }

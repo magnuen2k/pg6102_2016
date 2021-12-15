@@ -17,18 +17,19 @@ class TripService (
     private val portRepository: PortRepository
     ) {
 
+    // Implement pagination
     fun getTrips(): MutableIterable<Trip> {
         return tripRepository.findAll()
     }
 
     // Add trip
-    fun addTrip(trip: TripDto): Boolean {
+    fun addTrip(trip: TripDto): Trip {
 
         // TODO Check if boat and ports exists better
 
         if (trip.boat == null || trip.destination == null || trip.origin == null) {
-            return false
-            //throw IllegalStateException("Not provided proper data")
+            //return false
+            throw IllegalStateException("Not provided proper data")
         }
 
         val boat = boatRepository.findByIdOrNull(trip.boat!!)
@@ -41,10 +42,7 @@ class TripService (
         t.boat = boat
         t.crew = trip.crew
 
-        tripRepository.save(t)
-
-        return true
+        return tripRepository.save(t)
 
     }
-
 }

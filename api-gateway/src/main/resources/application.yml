@@ -20,3 +20,7 @@ spring:
           uri: lb://trips
           predicates:
             - Path=/api/trips/**
+        - id: Booking
+          uri: lb://booking
+          predicates:
+            - Path=/api/booking/**
