@@ -7,6 +7,7 @@ import no.kristiania.trips.db.Boat
 import no.kristiania.trips.db.Port
 import no.kristiania.trips.db.Status
 import no.kristiania.trips.db.Trip
+import no.kristiania.trips.dto.PatchTripDto
 import no.kristiania.trips.repository.BoatRepository
 import no.kristiania.trips.repository.PortRepository
 import no.kristiania.trips.repository.TripRepository
@@ -193,6 +194,20 @@ class RestAPITest {
             .post("/api/trips/byIds")
             .then()
             .statusCode(200)
+    }
+
+    @Test
+    fun testPatchTrip() {
+        val t = getTripWithRandomBoatAndPort()
+
+        val patch = PatchTripDto(15, 2)
+
+        RestAssured.given().auth().basic("foo", "123")
+            .header("Content-Type", "application/json")
+            .body(patch)
+            .patch("/api/trips/${t.tripId}")
+            .then()
+            .statusCode(204)
     }
 
     fun getTripWithRandomBoatAndPort() : Trip {

@@ -61,7 +61,7 @@ class RestAPI (
 
     @ApiOperation("PUT a new planned trip")
     @PutMapping
-    fun addTrip(@RequestBody tripDto: TripDto): ResponseEntity<WrappedResponse<Void>> {
+    fun addTrip(@RequestBody tripDto: TripDto): ResponseEntity<WrappedResponse<Trip>> {
         val response = try {
             tripService.addTrip(tripDto)
         } catch (e: IllegalStateException) {
@@ -70,7 +70,7 @@ class RestAPI (
 
         rabbit.convertAndSend(fanout.name, "", response.tripId!!)
 
-        return RestResponseFactory.noPayload(201)
+        return RestResponseFactory.payload(201, response)
     }
 
     @ApiOperation("DELETE a trip by id")
