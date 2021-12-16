@@ -52,6 +52,7 @@ const TripList = () => {
             crew={t.crew}
             passengers={t.passengers}
             tripYear={t.tripYear}
+            booking={true}
           />
         </Col>
       ))

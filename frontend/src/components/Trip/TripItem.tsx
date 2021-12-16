@@ -5,8 +5,21 @@ import { UserContext } from "../../contexts/UserContext";
 import { UserContextType } from "../../types/UserContextType";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { IPort } from "../../interfaces/IPort";
+import { IBoat } from "../../interfaces/IBoat";
 
-const TripItem: FC<ITrip> = ({
+interface ITripItemProps {
+  tripId?: number;
+  origin: IPort;
+  destination: IPort;
+  boat: IBoat;
+  crew: number;
+  passengers: number;
+  tripYear: number;
+  booking?: boolean;
+}
+
+const TripItem: FC<ITripItemProps> = ({
   tripId,
   origin,
   destination,
@@ -14,6 +27,7 @@ const TripItem: FC<ITrip> = ({
   crew,
   passengers,
   tripYear,
+  booking,
 }) => {
   const { user } = useContext(UserContext) as UserContextType;
 
@@ -27,7 +41,7 @@ const TripItem: FC<ITrip> = ({
       <Card.Text>Passengers: {passengers}</Card.Text>
       <Card.Text>Year: {tripYear}</Card.Text>
 
-      {user ? (
+      {user && booking ? (
         <Link to={`/trips/booking-details/${tripId}`}>
           <Button>BOOK</Button>
         </Link>
