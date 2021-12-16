@@ -52,7 +52,7 @@ const TripForm = () => {
     // Try to POST new trip, else handle error
     try {
       console.log(trip);
-      res = await axios.put("/api/trips", trip);
+      res = await axios.put("/api/trips/", trip);
       setIsLoading(true);
     } catch (e: any) {
       handleError(e, setIsLoading, setResponse);

@@ -10,7 +10,7 @@ spring:
     database: postgresql
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   redis:
     host: redis
     port: 6379
