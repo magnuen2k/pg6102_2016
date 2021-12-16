@@ -22,11 +22,6 @@ class TripService (
     private val em: EntityManager
     ) {
 
-    // Implement pagination
-    fun getTrips(): MutableIterable<Trip> {
-        return tripRepository.findAll()
-    }
-
     fun getNextPage(size: Int, keysetId: Long? = null, keysetYear: Int? = null): List<TripDto> {
         if (size < 1 || size > 1000) {
             throw IllegalArgumentException("Invalid size value: $size")
