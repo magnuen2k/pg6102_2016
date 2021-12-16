@@ -2,10 +2,7 @@ package no.kristiania.e2etests
 
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
-import no.kristiania.booking.dto.BoatDto
-import no.kristiania.booking.dto.BookingDto
-import no.kristiania.booking.dto.PortDto
-import no.kristiania.booking.dto.TripDto
+
 import org.awaitility.Awaitility
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
@@ -148,7 +145,7 @@ class RestIT {
     }
 
     // AMQP (HAS TO BE DEFAULT BOAT AND PORT TO WORK)!!
-    @Test
+    /*@Test
     fun testCreateTrip() {
         // Create boat, ports and trip
         val b = BoatDto("Test", 32, "Test2", 6, 20)
@@ -201,6 +198,6 @@ class RestIT {
             .then()
             .statusCode(200)
             .body("data.tripId", Matchers.equalTo(11))
-    }
+    }*/
 
 }
