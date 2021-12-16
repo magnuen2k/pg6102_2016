@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: validate
   redis:
@@ -26,3 +26,5 @@ spring:
       port: 8500
       discovery:
         instanceId: ${spring.application.name}:${random.value}
+
+weatherServiceAddress: "weather:8080"

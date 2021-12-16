@@ -25,7 +25,7 @@ spring:
           predicates:
             - Path=/api/booking/**
         - id: Weather
-          uri: http://weather:8080
+          uri: lb://weather
           predicates:
             - Path=/api/weather/**
         - id: frontend

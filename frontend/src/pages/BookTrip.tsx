@@ -12,8 +12,8 @@ interface IPatchTrip {
 }
 
 const initialPatchTrip = {
-  passengers: 0,
-  crew: 0,
+  passengers: 1,
+  crew: 1,
 };
 
 const BookTrip: FC = () => {

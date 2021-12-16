@@ -19,14 +19,10 @@ class RestAPI(
 
     @ApiOperation("Get the weather status for a given port")
     @GetMapping("/{id}")
-    fun getWeather(@PathVariable id: String): ResponseEntity<WrappedResponse<WeatherStatus>> {
+    fun getWeather(@PathVariable id: String): ResponseEntity<WrappedResponse<String>> {
         val status = weatherService.getWeatherStatus(id)
 
-         return if(status != null) {
-            RestResponseFactory.payload(200, status)
-        } else {
-            RestResponseFactory.notFound("Port not defined")
-        }
+         return RestResponseFactory.payload(200, status)
 
     }
 }

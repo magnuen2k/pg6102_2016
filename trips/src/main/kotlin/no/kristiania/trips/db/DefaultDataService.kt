@@ -5,9 +5,9 @@ import no.kristiania.trips.repository.PortRepository
 import no.kristiania.trips.repository.TripRepository
 import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import javax.annotation.PostConstruct
 
 @Service
 @Transactional
@@ -17,10 +17,9 @@ class DefaultDataService (
     val portRepository: PortRepository,
     private val rabbit: RabbitTemplate,
     private val fanout: FanoutExchange
-    ) {
+    ) : CommandLineRunner {
 
-    @PostConstruct
-    fun init() {
+    override fun run(vararg args: String?) {
 
         // If there is not data, crete it
         if(boatRepository.count() == 0L && portRepository.count() == 0L && tripRepository.count() == 0L) {
@@ -32,20 +31,20 @@ class DefaultDataService (
             val port2 = createPort("port2", 100)
 
             // Create default trips if there is none
-            createTrip(test, 2, port2, port1, Status.WARNING, 2001)
-            createTrip(test, 4, port2, port1, Status.WARNING, 2005)
-            createTrip(test, 5, port2, port1, Status.WARNING, 2015)
-            createTrip(test, 6, port2, port1, Status.WARNING, 2021)
-            createTrip(test, 5, port2, port1, Status.WARNING, 2020)
-            createTrip(test, 6, port2, port1, Status.WARNING, 2019)
-            createTrip(test, 2, port2, port1, Status.WARNING, 2018)
-            createTrip(test, 3, port2, port1, Status.WARNING, 2020)
-            createTrip(test, 1, port2, port1, Status.WARNING, 2008)
-            createTrip(test, 2, port2, port1, Status.WARNING, 2009)
+            createTrip(test, 2, port2, port1, "test", 2016)
+            createTrip(test, 4, port2, port1, "test", 2015)
+            createTrip(test, 5, port2, port1, "test", 2016)
+            createTrip(test, 6, port2, port1, "test", 2020)
+            createTrip(test, 5, port2, port1, "test", 2012)
+            createTrip(test, 6, port2, port1, "test", 2021)
+            createTrip(test, 2, port2, port1, "test", 2014)
+            createTrip(test, 3, port2, port1, "testes", 2020)
+            createTrip(test, 1, port2, port1, "test", 2001)
+            createTrip(test, 2, port2, port1, "test", 2002)
         }
     }
 
-    fun createTrip(b: Boat, crew: Int, p2: Port, p1: Port, status: Status, tripYear: Int) {
+    fun createTrip(b: Boat, crew: Int, p2: Port, p1: Port, status: String, tripYear: Int) {
         val t = tripRepository.save(Trip( origin = p1, destination = p2, boat = b, crew = crew, tripYear = tripYear, status = status))
 
         // To make sure trips are created and handled in booking api

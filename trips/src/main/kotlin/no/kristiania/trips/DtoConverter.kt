@@ -5,7 +5,7 @@ import no.kristiania.trips.dto.TripDto
 
 object DtoConverter {
     fun transform(trip: Trip) : TripDto = trip.run {
-        TripDto(tripId, origin, destination, boat, crew, passengers, tripYear)
+        TripDto(tripId, origin, destination, boat, crew, passengers, tripYear, status)
     }
 
     fun transform(trips: Iterable<Trip>) : List<TripDto> = trips.map { transform(it) }

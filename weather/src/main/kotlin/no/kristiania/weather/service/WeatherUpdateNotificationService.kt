@@ -27,8 +27,6 @@ class WeatherUpdateNotificationService(
     }
 
     fun fireWeatherChange() {
-        log.info("timer fired!")
-
         rabbit.convertAndSend(fanout.name, "", "Weather has changed")
         // Fire next weather change in 2 seconds
         Timer().schedule(2000) {

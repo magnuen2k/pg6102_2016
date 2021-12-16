@@ -69,7 +69,7 @@ class RestAPITest {
             val json = ObjectMapper().writeValueAsString(dto)
 
             wiremockServer.stubFor(
-                WireMock.get(WireMock.urlMatching("/api/booking/mybookings"))
+                WireMock.get(WireMock.urlMatching("/api/trips/byIds"))
                     .willReturn(WireMock.aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json; charset=utf-8")

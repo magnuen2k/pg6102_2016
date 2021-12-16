@@ -1,17 +1,23 @@
 package no.kristiania.trips
 
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.common.ConsoleNotifier
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import net.minidev.json.JSONObject
+import no.kristiania.restdto.WrappedResponse
 import no.kristiania.trips.db.Boat
 import no.kristiania.trips.db.Port
-import no.kristiania.trips.db.Status
 import no.kristiania.trips.db.Trip
 import no.kristiania.trips.dto.PatchTripDto
 import no.kristiania.trips.repository.BoatRepository
 import no.kristiania.trips.repository.PortRepository
 import no.kristiania.trips.repository.TripRepository
 import org.hamcrest.CoreMatchers
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import wiremock.com.fasterxml.jackson.databind.ObjectMapper
 import javax.annotation.PostConstruct
 
 @ActiveProfiles("test")
@@ -49,6 +56,36 @@ class RestAPITest {
 
     companion object {
 
+        private lateinit var wiremockServer: WireMockServer
+
+        @BeforeAll
+        @JvmStatic
+        fun initClass() {
+            wiremockServer = WireMockServer(
+                WireMockConfiguration.wireMockConfig().dynamicPort().notifier(
+                ConsoleNotifier(true)
+            ))
+            wiremockServer.start()
+
+
+            val dto = WrappedResponse(code = 200, data = FakeData.getWeatherStatus()).validated()
+            val json = ObjectMapper().writeValueAsString(dto)
+
+            wiremockServer.stubFor(
+                WireMock.get(WireMock.urlMatching("/api/weather/*"))
+                    .willReturn(
+                        WireMock.aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                        .withBody(json)))
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun tearDown() {
+            wiremockServer.stop()
+        }
+
         class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
 
         @Container
@@ -60,7 +97,8 @@ class RestAPITest {
 
                 TestPropertyValues
                     .of("spring.rabbitmq.host=" + rabbitMQ.containerIpAddress,
-                        "spring.rabbitmq.port=" + rabbitMQ.getMappedPort(5672))
+                        "spring.rabbitmq.port=" + rabbitMQ.getMappedPort(5672),
+                        "weatherServiceAddress: localhost:${wiremockServer.port()}")
                     .applyTo(configurableApplicationContext.environment);
             }
         }
@@ -237,7 +275,7 @@ class RestAPITest {
         val t = Trip()
         t.tripYear = year
         t.passengers = passengers
-        t.status = Status.WARNING
+        t.status = "Warning"
         t.crew = crew
         t.boat = boat
         t.destination = destination

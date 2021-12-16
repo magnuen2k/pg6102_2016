@@ -5,4 +5,9 @@ spring:
     host: rabbitmq
   mvc:
     throw-exception-if-no-handler-found: true
-
+  cloud:
+    consul:
+      host: discovery
+      port: 8500
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}

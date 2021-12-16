@@ -4,6 +4,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.ManyToOne
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -30,13 +31,9 @@ class Trip (
     @NotNull
     var passengers: Int? = 0,
 
-    @NotNull
-    var status: Status? = null,
+    @NotBlank
+    var status: String? = null,
 
     @NotNull
     var tripYear: Int? = null
 )
-
-enum class Status {
-    WARNING,
-}

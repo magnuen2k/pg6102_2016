@@ -7,7 +7,7 @@ class WeatherService {
 
     private var test: Int = 0
 
-    fun getWeatherStatus(port: String) : WeatherStatus? {
+    fun getWeatherStatus(port: String) : String {
 
         test += 1
 
@@ -16,16 +16,16 @@ class WeatherService {
         }
 
         if(test == 1) {
-            return WeatherStatus.NORMAL
+            return WeatherStatus.NORMAL.toString()
         }
         if(test == 2) {
-            return WeatherStatus.WARNING
+            return WeatherStatus.WARNING.toString()
         }
         if(test == 3) {
-            return WeatherStatus.RISKY
+            return WeatherStatus.RISKY.toString()
         }
 
-        return WeatherStatus.HAZARD
+        return WeatherStatus.HAZARD.toString()
 
     }
 }

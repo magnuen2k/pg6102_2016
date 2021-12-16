@@ -3,7 +3,6 @@ package no.kristiania.trips.dto
 import io.swagger.annotations.ApiModelProperty
 import no.kristiania.trips.db.Boat
 import no.kristiania.trips.db.Port
-import no.kristiania.trips.db.Status
 
 class TripDto (
     @ApiModelProperty("Id of the trip")
@@ -28,5 +27,5 @@ class TripDto (
     var tripYear: Int? = null,
 
     @ApiModelProperty("")
-    var status: Status? = null
+    var status: String? = null
 )
