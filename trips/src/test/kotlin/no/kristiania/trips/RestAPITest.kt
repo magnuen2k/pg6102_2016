@@ -72,6 +72,19 @@ class RestAPITest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
+    @Test
+    fun testAccessControl() {
+        RestAssured.given().get("/api/trips/1").then().statusCode(401)
+        RestAssured.given().get("/api/trips/byIds").then().statusCode(401)
+        RestAssured.given().put("/api/trips/").then().statusCode(401)
+
+        // Try to get something that does not exist is saver than depending on some data being there
+        RestAssured.given().auth().basic("bar", "123")
+            .get("/api/trips/" + System.currentTimeMillis())
+            .then()
+            .statusCode(400)
+    }
+
     // Should be same as in application
     val page: Int = 4
 
@@ -107,11 +120,12 @@ class RestAPITest {
         body["boat"] = createBoat("foo", 4, 34)
         body["crew"] = 3
         body["passengers"] = 10
+        body["tripYear"] = 2021
 
-        RestAssured.given()
+        RestAssured.given().auth().basic("foo", "123")
             .header("Content-Type", "application/json")
             .body(body)
-            .put("api/trips/")
+            .put("/api/trips/")
             .then()
             .statusCode(201)
 
@@ -121,7 +135,7 @@ class RestAPITest {
     fun testDeleteTrip() {
         val t = getTripWithRandomBoatAndPort()
 
-        RestAssured.given()
+        RestAssured.given().auth().basic("foo", "123")
             .header("Content-Type", "application/json")
             .delete("api/trips/${t.tripId}")
             .then()
@@ -132,7 +146,7 @@ class RestAPITest {
     fun testGetTripById() {
         val t = getTripWithRandomBoatAndPort()
 
-        RestAssured.given()
+        RestAssured.given().auth().basic("foo", "123")
             .header("Content-Type", "application/json")
             .get("/api/trips/${t.tripId}")
             .then()
