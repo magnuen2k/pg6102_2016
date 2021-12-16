@@ -111,6 +111,18 @@ class RestAPITest {
     }
 
     @Test
+    fun testAccessControl() {
+        RestAssured.given().get("/api/booking/1").then().statusCode(401)
+        RestAssured.given().get("/api/booking/mybookings").then().statusCode(401)
+        RestAssured.given().post("/api/booking/").then().statusCode(401)
+
+        RestAssured.given().auth().basic("bar", "123")
+            .get("/api/booking/1")
+            .then()
+            .statusCode(400)
+    }
+
+    @Test
     fun testStartTrip() {
         var t = Trip()
         t.id = 1
