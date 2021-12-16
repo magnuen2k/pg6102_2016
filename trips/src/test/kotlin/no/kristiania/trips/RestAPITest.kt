@@ -175,6 +175,26 @@ class RestAPITest {
             .statusCode(200)
     }
 
+    // This endpoint is getting hit from booking api where the trip ids are filtered to a users booked trips
+    @Test
+    fun testGetTripsByTripIds() {
+        val t1 = getTripWithRandomBoatAndPort()
+        val t2 = getTripWithRandomBoatAndPort()
+        val t3 = getTripWithRandomBoatAndPort()
+
+        val tripIds: MutableList<Long> = mutableListOf()
+        tripIds.add(t1.tripId!!)
+        tripIds.add(t2.tripId!!)
+        tripIds.add(t3.tripId!!)
+
+        RestAssured.given().auth().basic("foo", "123")
+            .header("Content-Type", "application/json")
+            .body(tripIds)
+            .post("/api/trips/byIds")
+            .then()
+            .statusCode(200)
+    }
+
     fun getTripWithRandomBoatAndPort() : Trip {
         val b = createBoat("test", 15, 21)
         val p1 = createPort(200)
