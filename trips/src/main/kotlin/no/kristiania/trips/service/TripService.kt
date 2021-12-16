@@ -2,6 +2,7 @@ package no.kristiania.trips.service
 
 import no.kristiania.trips.DtoConverter
 import no.kristiania.trips.db.Trip
+import no.kristiania.trips.dto.PatchTripDto
 import no.kristiania.trips.dto.TripDto
 import no.kristiania.trips.repository.BoatRepository
 import no.kristiania.trips.repository.PortRepository
@@ -107,6 +108,19 @@ class TripService (
 
         return DtoConverter.transform(trips)
 
+    }
+
+    fun updateTrip(trip: PatchTripDto, id: Long): Boolean {
+        if(trip.crew == 0 || trip.crew == 0) {
+            return false
+        }
+
+        val t = tripRepository.findByIdOrNull(id) ?: return false
+
+        t.crew = trip.crew
+        t.passengers = trip.passengers
+
+        return true
     }
 
     fun deleteTrip(id: Long) : Boolean {

@@ -7,6 +7,7 @@ import no.kristiania.restdto.WrappedResponse
 import no.kristiania.trips.db.Boat
 import no.kristiania.trips.db.Port
 import no.kristiania.trips.db.Trip
+import no.kristiania.trips.dto.PatchTripDto
 import no.kristiania.trips.dto.TripDto
 import no.kristiania.trips.service.BoatService
 import no.kristiania.trips.service.PortService
@@ -32,12 +33,6 @@ class RestAPI (
     companion object{
         private val log = LoggerFactory.getLogger(RestAPI::class.java)
     }
-
-   /* @ApiOperation("GET trips")
-    @GetMapping
-    fun getAll(): MutableIterable<Trip> {
-        return tripService.getTrips()
-    }*/
 
     @ApiOperation("Retrieve all trips")
     @GetMapping
@@ -121,6 +116,16 @@ class RestAPI (
             RestResponseFactory.userFailure("No ids provided")
         } else {
             RestResponseFactory.payload(200, trips)
+        }
+    }
+
+    @ApiOperation("PATCH passengers and crew of a trip")
+    @PatchMapping("/{id}")
+    fun patchTrip(@RequestBody trip: PatchTripDto, @PathVariable id: Long): ResponseEntity<WrappedResponse<Void>> {
+        return if(tripService.updateTrip(trip, id)) {
+            RestResponseFactory.noPayload(204)
+        } else {
+            RestResponseFactory.noPayload(404)
         }
     }
 }
