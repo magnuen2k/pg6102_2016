@@ -1,11 +1,20 @@
 package no.kristiania.booking
 
+import wiremock.com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.common.ConsoleNotifier
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.restassured.RestAssured
 import net.minidev.json.JSONObject
 import no.kristiania.booking.db.Trip
 import no.kristiania.booking.repository.BookingRepository
 import no.kristiania.booking.repository.TripRepository
 import no.kristiania.booking.repository.UserRepository
+import no.kristiania.restdto.WrappedResponse
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +52,34 @@ class RestAPITest {
 
     companion object {
 
+        private lateinit var wiremockServer: WireMockServer
+
+        @BeforeAll
+        @JvmStatic
+        fun initClass() {
+            wiremockServer = WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort().notifier(
+                ConsoleNotifier(true)
+            ))
+            wiremockServer.start()
+
+
+            val dto = WrappedResponse(code = 200, data = FakeData.getTripDtos()).validated()
+            val json = ObjectMapper().writeValueAsString(dto)
+
+            wiremockServer.stubFor(
+                WireMock.get(WireMock.urlMatching("/api/booking/mybookings"))
+                    .willReturn(WireMock.aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                        .withBody(json)))
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun tearDown() {
+            wiremockServer.stop()
+        }
+
         class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
 
         @Container
@@ -54,11 +91,17 @@ class RestAPITest {
 
                 TestPropertyValues
                     .of("spring.rabbitmq.host=" + rabbitMQ.containerIpAddress,
-                        "spring.rabbitmq.port=" + rabbitMQ.getMappedPort(5672))
+                        "spring.rabbitmq.port=" + rabbitMQ.getMappedPort(5672),
+                        "tripServiceAddress: localhost:${wiremockServer.port()}")
                     .applyTo(configurableApplicationContext.environment);
             }
         }
     }
+
+    /*@BeforeEach
+    fun initTest() {
+        tripRepository.deleteAll()
+    }*/
 
     @PostConstruct
     fun init() {
