@@ -1,12 +1,16 @@
 package no.kristiania.booking
 
+import com.fasterxml.jackson.databind.SerializationFeature
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Queue
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.loadbalancer.LoadBalanced
 import org.springframework.context.annotation.Bean
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.web.client.RestTemplate
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.service.ApiInfo
@@ -15,6 +19,16 @@ import springfox.documentation.spring.web.plugins.Docket
 
 @SpringBootApplication
 class Application {
+
+    @LoadBalanced
+    @Bean
+    fun loadBalancedClient() : RestTemplate {
+        val restTemplate = RestTemplate()
+        val messageConverter = MappingJackson2HttpMessageConverter()
+        messageConverter.objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+        restTemplate.messageConverters.add(messageConverter)
+        return restTemplate
+    }
 
     @Bean
     fun swaggerApi(): Docket {

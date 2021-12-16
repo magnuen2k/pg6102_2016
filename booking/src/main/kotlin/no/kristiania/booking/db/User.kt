@@ -1,9 +1,8 @@
 package no.kristiania.booking.db
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name="user_data")
@@ -12,5 +11,6 @@ class User (
     @NotBlank
     var userId: String? = null,
 
-    // Might have a list of all bookings from user?
+    @OneToMany(mappedBy = "user", cascade = [(CascadeType.MERGE)])
+    var trips: MutableList<Booking> = mutableListOf()
 )

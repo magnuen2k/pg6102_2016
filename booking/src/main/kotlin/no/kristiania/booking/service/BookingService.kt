@@ -1,7 +1,6 @@
 package no.kristiania.booking.service
 
 import no.kristiania.booking.DtoConverter
-import no.kristiania.booking.MOMListener
 import no.kristiania.booking.db.Booking
 import no.kristiania.booking.db.Status
 import no.kristiania.booking.dto.BookingDto
@@ -32,6 +31,9 @@ class BookingService(
 
         val b = Booking(user = user!!, trip = trip!!)
         b.ongoing = Status.ONGOING
+
+        user.trips.add(b)
+        log.info("ADDING TRIP TO USER" + user.trips.toString())
 
         bookingRepository.save(b)
 

@@ -38,6 +38,7 @@ const BookTrip: FC = () => {
     }
 
     console.log(res?.data.code);
+    setTrip(undefined);
   };
 
   return (

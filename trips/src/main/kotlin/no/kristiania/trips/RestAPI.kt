@@ -110,4 +110,10 @@ class RestAPI (
     fun getPorts(): ResponseEntity<WrappedResponse<MutableIterable<Port>>> {
         return RestResponseFactory.payload(200, portService.getPorts())
     }
+
+    @ApiOperation("Get all of the trips a user has booked")
+    @PostMapping("/byIds")
+    fun getAllTripsByUser(@RequestBody tripIds: MutableList<Long>) {
+        log.info(tripIds.toString())
+    }
 }
