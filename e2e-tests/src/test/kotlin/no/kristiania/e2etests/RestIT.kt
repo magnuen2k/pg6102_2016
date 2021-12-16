@@ -59,7 +59,7 @@ class RestIT {
                         .port(env.getServicePort("discovery", 8500))
                         .get("/v1/agent/services")
                         .then()
-                        .body("size()", CoreMatchers.equalTo(4))
+                        .body("size()", CoreMatchers.equalTo(5))
 
                     true
                 }
@@ -149,8 +149,9 @@ class RestIT {
     }
 
     // AMQP (HAS TO BE DEFAULT BOAT AND PORT TO WORK)!!
+    // This tests both api and verifies that rabbitmq works
     @Test
-    fun testCreateTrip() {
+    fun testCreateTripAndVerifyAMQPOnBookingService() {
         // Create boat, ports and trip
         val b = BoatDto("Test", 32, "Test2", 6, 20)
         val p1 = PortDto("port1", 50)
@@ -202,6 +203,19 @@ class RestIT {
             .then()
             .statusCode(200)
             .body("data.tripId", Matchers.equalTo(11))
+    }
+
+    @Test
+    fun testGetWeather() {
+        Awaitility.await().atMost(120, TimeUnit.SECONDS)
+            .pollInterval(Duration.ofSeconds(10))
+            .ignoreExceptions()
+            .until {
+                RestAssured.given().get("/api/weather/someport")
+                    .then()
+                    .statusCode(200)
+                true
+            }
     }
 
 }
