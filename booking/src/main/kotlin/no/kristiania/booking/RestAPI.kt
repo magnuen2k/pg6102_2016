@@ -2,6 +2,7 @@ package no.kristiania.booking
 
 import io.swagger.annotations.ApiOperation
 import no.kristiania.booking.dto.BookingDto
+import no.kristiania.booking.dto.TripDto
 import no.kristiania.booking.service.BookingService
 import no.kristiania.booking.service.TripService
 import no.kristiania.restdto.RestResponseFactory
@@ -45,9 +46,15 @@ class RestAPI(
 
     @ApiOperation("GET all trips for specific user")
     @GetMapping("/mybookings")
-    fun getTripsForUser(auth: Authentication) {
+    fun getTripsForUser(auth: Authentication): ResponseEntity<WrappedResponse<List<TripDto>>> {
         log.info(auth.name)
 
-        tripService.getAllTripsByUserId(auth.name)
+        val trips = tripService.getAllTripsByUserId(auth.name)
+        return if(trips == null) {
+            RestResponseFactory.userFailure("No trips booked by user: ${auth.name}")
+        } else {
+            RestResponseFactory.payload(200, trips)
+        }
+
     }
 }

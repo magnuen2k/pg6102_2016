@@ -58,7 +58,7 @@ class TripService (
         return true
     }
 
-    fun getAllTripsByUserId(userId: String): Iterable<TripDto>? {
+    fun getAllTripsByUserId(userId: String): List<TripDto>? {
         val uri = UriComponentsBuilder
             .fromUriString("http://${tripServiceAddress.trim()}/api/trips/byIds")
             .build().toUri()
@@ -84,19 +84,27 @@ class TripService (
 
         val data = HttpEntity(jsonList, headers)
 
-        return cb.run(
+        val response = cb.run(
             {
                 client.exchange(
                     uri,
                     HttpMethod.POST,
                     data,
-                    object : ParameterizedTypeReference<WrappedResponse<Iterable<TripDto>>>() {}
-                ).body?.data
+                    object : ParameterizedTypeReference<WrappedResponse<List<TripDto>>>() {}
+                )
             },
             { err ->
                 log.error("Failed to fetch data with error: ${err.message}")
                 null
             }
-        )
+        ) ?: return null
+
+        log.info("RESPONSE")
+
+        if(response.statusCodeValue != 200) {
+            log.error("There was an error fetching the data")
+        }
+
+        return response.body.data
     }
 }

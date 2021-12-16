@@ -94,6 +94,21 @@ class TripService (
         return null
     }
 
+    fun getTripsByIds(tripIds: MutableList<Long>): List<TripDto>? {
+        if(tripIds.size <= 0) {
+            return null
+        }
+
+        val trips: MutableList<Trip> = mutableListOf()
+
+        for (id in tripIds) {
+            trips.add(tripRepository.findByIdOrNull(id)!!)
+        }
+
+        return DtoConverter.transform(trips)
+
+    }
+
     fun deleteTrip(id: Long) : Boolean {
         return if (tripRepository.existsById(id)) {
             tripRepository.deleteById(id)

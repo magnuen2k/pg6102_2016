@@ -113,7 +113,14 @@ class RestAPI (
 
     @ApiOperation("Get all of the trips a user has booked")
     @PostMapping("/byIds")
-    fun getAllTripsByUser(@RequestBody tripIds: MutableList<Long>) {
+    fun getAllTripsByUser(@RequestBody tripIds: MutableList<Long>): ResponseEntity<WrappedResponse<List<TripDto>>> {
         log.info(tripIds.toString())
+        val trips = tripService.getTripsByIds(tripIds)
+
+        return if(trips == null) {
+            RestResponseFactory.userFailure("No ids provided")
+        } else {
+            RestResponseFactory.payload(200, trips)
+        }
     }
 }
