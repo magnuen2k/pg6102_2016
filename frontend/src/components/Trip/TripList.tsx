@@ -3,6 +3,7 @@ import axios from "axios";
 import { ITrip } from "../../interfaces/ITrip";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import TripItem from "./TripItem";
+import Loading from "../Loading";
 
 interface ITripPage {
   trips: ITrip[];
@@ -57,9 +58,13 @@ const TripList = () => {
     );
   };
 
+  if (!tripPage?.trips) {
+    return <Loading />;
+  }
+
   return (
     <Container>
-      <Row>{createTripList()}</Row>
+      <Row className="mb-5">{createTripList()}</Row>
       <Button onClick={getFromBackend}>Back to start</Button>
       <Button onClick={getNextPage}>Next page</Button>
     </Container>

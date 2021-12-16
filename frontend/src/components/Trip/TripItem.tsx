@@ -19,13 +19,13 @@ const TripItem: FC<ITrip> = ({
 
   return (
     <Card>
-      <Card.Header>{tripId}</Card.Header>
-      <Card.Text>{origin.name}</Card.Text>
-      <Card.Text>{destination.name}</Card.Text>
-      <Card.Text>{boat.name}</Card.Text>
-      <Card.Text>{crew}</Card.Text>
-      <Card.Text>{passengers}</Card.Text>
-      <Card.Text>{tripYear}</Card.Text>
+      <Card.Header>TRIP - {tripId}</Card.Header>
+      <Card.Text>Origin: {origin.name}</Card.Text>
+      <Card.Text>Destination: {destination.name}</Card.Text>
+      <Card.Text>Boat: {boat.name}</Card.Text>
+      <Card.Text>Crew: {crew}</Card.Text>
+      <Card.Text>Passengers: {passengers}</Card.Text>
+      <Card.Text>Year: {tripYear}</Card.Text>
 
       {user ? (
         <Link to={`/trips/booking-details/${tripId}`}>

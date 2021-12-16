@@ -2,12 +2,10 @@ package no.kristiania.booking.service
 
 import com.google.gson.Gson
 import no.kristiania.booking.db.Trip
-import no.kristiania.booking.dto.IdDto
 import no.kristiania.booking.dto.TripDto
 import no.kristiania.booking.repository.TripRepository
 import no.kristiania.booking.repository.UserRepository
 import no.kristiania.restdto.WrappedResponse
-import org.json.JSONArray
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory
@@ -72,7 +70,6 @@ class TripService (
         val trips: MutableList<Long> = mutableListOf()
 
         user.trips.forEach { booking ->
-            //trips.add(IdDto(booking.trip.id!!))
             trips.add(booking.trip.id!!)
         }
 
