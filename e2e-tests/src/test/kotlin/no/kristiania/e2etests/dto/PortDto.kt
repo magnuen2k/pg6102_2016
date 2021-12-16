@@ -1,4 +1,4 @@
-package no.kristiania.booking.dto
+package no.kristiania.e2etests.dto
 
 import io.swagger.annotations.ApiModelProperty
 
