@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ITrip } from "../../interfaces/ITrip";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import TripItem from "./TripItem";
 import Loading from "../Loading";
+import { IBoat } from "../../interfaces/IBoat";
 
 interface ITripPage {
   trips: ITrip[];
@@ -13,10 +14,17 @@ interface ITripPage {
 
 const TripList = () => {
   const [tripPage, setTripPage] = useState<ITripPage>();
+  const [boats, setBoats] = useState<IBoat[]>();
 
   useEffect(() => {
     getFromBackend();
+    getBoats();
   }, []);
+
+  const getBoats = async () => {
+    const res = await axios.get("/api/trips/boats");
+    setBoats(res.data.data);
+  };
 
   const getFromBackend = async () => {
     const res = await axios.get("/api/trips");
@@ -59,12 +67,27 @@ const TripList = () => {
     );
   };
 
-  if (!tripPage?.trips) {
+  const sortList = (boatName: string) => {
+    setTripPage({
+      ...tripPage,
+      // @ts-ignore
+      trips: tripPage?.trips.filter((t) => t.boat.name == boatName),
+    });
+  };
+
+  if (!tripPage?.trips || !boats) {
     return <Loading />;
   }
 
   return (
     <Container>
+      <Form.Select onChange={(e) => sortList(e.target.value)}>
+        {boats.map((b: IBoat, i) => (
+          <option value={b.name} key={i}>
+            {b.name}
+          </option>
+        ))}
+      </Form.Select>
       <Row className="mb-5">{createTripList()}</Row>
       <Button onClick={getFromBackend}>Back to start</Button>
       <Button onClick={getNextPage}>Next page</Button>
