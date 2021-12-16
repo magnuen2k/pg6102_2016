@@ -7,7 +7,9 @@ import com.github.tomakehurst.wiremock.common.ConsoleNotifier
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.restassured.RestAssured
 import net.minidev.json.JSONObject
+import no.kristiania.booking.db.Booking
 import no.kristiania.booking.db.Trip
+import no.kristiania.booking.db.User
 import no.kristiania.booking.repository.BookingRepository
 import no.kristiania.booking.repository.TripRepository
 import no.kristiania.booking.repository.UserRepository
@@ -142,6 +144,42 @@ class RestAPITest {
 
     @Test
     fun testGetBooking() {
+        val t = Trip()
+        t.id = System.currentTimeMillis()
+        tripRepository.save(t)
 
+        val user = User()
+        user.userId = "foo" + System.currentTimeMillis()
+        userRepository.save(user)
+
+        var b = Booking(user = user, trip = t)
+        b = bookingRepository.save(b)
+
+        RestAssured.given().auth().basic("foo", "123")
+            .header("Content-Type", "application/json")
+            .get("/api/booking/${b.id}")
+            .then()
+            .statusCode(200)
     }
+
+    // Hitting endpoint that should be mocked by wiremock
+    /*@Test
+    fun testGetTripsForUser() {
+        val t = Trip()
+        t.id = System.currentTimeMillis()
+        tripRepository.save(t)
+
+        val user = User()
+        user.userId = "foo"
+        userRepository.save(user)
+
+        var b = Booking(user = user, trip = t)
+        b = bookingRepository.save(b)
+
+        RestAssured.given().auth().basic("foo", "123")
+            .header("Content-Type", "application/json")
+            .get("/api/booking/mybookings")
+            .then()
+            .statusCode(200)
+    }*/
 }
