@@ -10,6 +10,7 @@
         <module>booking</module>
         <module>e2e-tests</module>
         <module>frontend</module>
+        <module>weather</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

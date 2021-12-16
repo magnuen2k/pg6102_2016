@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: weather
+  rabbitmq:
+    host: rabbitmq
+  mvc:
+    throw-exception-if-no-handler-found: true
+

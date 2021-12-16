@@ -12,4 +12,12 @@ class PortService(
     fun getPorts(): MutableIterable<Port> {
         return portRepository.findAll()
     }
+
+    fun updateWeather() {
+        val ports = portRepository.findAll()
+
+        for (port in ports) {
+
+        }
+    }
 }
