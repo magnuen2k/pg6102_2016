@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button, Container, Form } from "react-bootstrap";
 import { UserContext } from "../contexts/UserContext";
 import { UserContextType } from "../types/UserContextType";
+import { useNavigate } from "react-router-dom";
 
 interface IPatchTrip {
   passengers: number;
@@ -22,6 +23,8 @@ const BookTrip: FC = () => {
 
   const [trip, setTrip] = useState<ITrip>();
   const [patchTrip, setPatchTrip] = useState<IPatchTrip>(initialPatchTrip);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getTrip();
@@ -59,6 +62,7 @@ const BookTrip: FC = () => {
     console.log(res?.data.code);
     setTrip(undefined);
     setPatchTrip(initialPatchTrip);
+    navigate("/");
   };
 
   const displayPossibilities = (size: number) => {
