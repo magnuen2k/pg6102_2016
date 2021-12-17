@@ -4,6 +4,8 @@ import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
+// Copied from class
+
 @Entity
 @Table(name="USERS")
 class User(

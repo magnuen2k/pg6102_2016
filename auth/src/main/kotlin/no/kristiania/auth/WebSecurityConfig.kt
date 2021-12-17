@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler
 import javax.sql.DataSource
 
+// Copied from class
+
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
