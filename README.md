@@ -119,8 +119,8 @@ As I don't see all the topic requirements logically working together, I have mad
 Every functionality is tested from frontend and runs smoothly on my machine. All source code compiles and builds, and all tests runs properly.
 
 ## Known bugs
-While developing I sometimes wasn't able to see the trip I added instantly.
-
+- While developing I sometimes wasn't able to see the trip I added instantly.
+- While planning a trip from frontend the user HAS to select all dropdowns.
 
 ## Docker note:
 - As I had alot of docker images and containers on my machine, some services such as `postgres` started to exit. Cleaning docker images, containers and volumes did the job.
