@@ -20,6 +20,14 @@ Run the full application:
 
 - Application is then accessible at port `80` at your machine.
 
+- When running the application, one can either sign up or use any of these premade users
+
+        * userId: test
+        * password: test
+        
+        * userId: foo
+        * password: bar
+
 Run `e2e-tests`:
 
 - Make sure project is buildt. Run `RestIT` test class from `e2e-tests` module. Tests are disabled by default so it is not run while building project.
