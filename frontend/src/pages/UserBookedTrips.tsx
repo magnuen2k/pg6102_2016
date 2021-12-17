@@ -28,7 +28,7 @@ const UserBookedTrips = () => {
 
   return (
     <Container>
-      <h1>Here is a list of trips you have booked</h1>
+      <h1 className="mt-5">Here is a list of trips you have booked</h1>
       <Row>
         {trips.map((t: ITrip, key: number) => (
           <Col md={12} lg={6} xl={6} className="mt-5" key={key}>
@@ -40,6 +40,7 @@ const UserBookedTrips = () => {
               crew={t.crew}
               passengers={t.passengers}
               tripYear={t.tripYear}
+              status={t.status}
             />
           </Col>
         ))}

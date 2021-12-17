@@ -16,6 +16,7 @@ interface ITripItemProps {
   crew: number;
   passengers: number;
   tripYear: number;
+  status: string;
   booking?: boolean;
 }
 
@@ -28,6 +29,7 @@ const TripItem: FC<ITripItemProps> = ({
   passengers,
   tripYear,
   booking,
+  status,
 }) => {
   const { user } = useContext(UserContext) as UserContextType;
 
@@ -40,6 +42,7 @@ const TripItem: FC<ITripItemProps> = ({
       <Card.Text>Crew: {crew}</Card.Text>
       <Card.Text>Passengers: {passengers}</Card.Text>
       <Card.Text>Year: {tripYear}</Card.Text>
+      <Card.Text>Weather status: {status}</Card.Text>
 
       {user && booking ? (
         <Link to={`/trips/booking-details/${tripId}`}>

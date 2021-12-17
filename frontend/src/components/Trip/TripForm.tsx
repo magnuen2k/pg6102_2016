@@ -18,6 +18,7 @@ const initialState = {
   crew: 0,
   passengers: 0,
   tripYear: 0,
+  status: "",
 };
 
 const TripForm = () => {
@@ -69,7 +70,6 @@ const TripForm = () => {
 
     // Clear input form
     setTrip(initialState);
-    navigate("/");
   };
 
   if (!boats || !ports) {
@@ -98,7 +98,8 @@ const TripForm = () => {
   };
 
   return (
-    <div className="mb-2 mt-5">
+    <div className="mb-2 mt-3">
+      <h3 className="mb-2">Plan a trip</h3>
       <Form>
         <Form.Group>
           <FormControl
@@ -110,7 +111,7 @@ const TripForm = () => {
             }
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-2">
           <DropDownOptions
             handleChange={handleBoat}
             options={boats.map((b: IBoat) => {
@@ -118,7 +119,7 @@ const TripForm = () => {
             })}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-2">
           <DropDownOptions
             handleChange={(e) => handlePorts(e, "destination")}
             options={ports.map((p: IPort) => {
@@ -126,7 +127,7 @@ const TripForm = () => {
             })}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-2">
           <DropDownOptions
             handleChange={(e) => handlePorts(e, "origin")}
             options={ports.map((p: IPort) => {
@@ -134,7 +135,9 @@ const TripForm = () => {
             })}
           />
         </Form.Group>
-        <Button onClick={planTrip}>Plan trip</Button>
+        <Button className="mt-4" onClick={planTrip}>
+          Plan trip
+        </Button>
       </Form>
       {isLoading && <Loading />}
       {response && (

@@ -60,6 +60,7 @@ const TripList = () => {
             crew={t.crew}
             passengers={t.passengers}
             tripYear={t.tripYear}
+            status={t.status}
             booking={true}
           />
         </Col>
@@ -81,16 +82,22 @@ const TripList = () => {
 
   return (
     <Container>
-      <Form.Select onChange={(e) => sortList(e.target.value)}>
+      <h3 className="mt-3">All trips</h3>
+      <p>Filter selected page by boat</p>
+      <Form.Select className="mt-3" onChange={(e) => sortList(e.target.value)}>
         {boats.map((b: IBoat, i) => (
           <option value={b.name} key={i}>
             {b.name}
           </option>
         ))}
       </Form.Select>
+      <Button className="mt-5" onClick={getFromBackend}>
+        Back to start
+      </Button>
+      <Button className="mt-5 mx-3" onClick={getNextPage}>
+        Next page
+      </Button>
       <Row className="mb-5">{createTripList()}</Row>
-      <Button onClick={getFromBackend}>Back to start</Button>
-      <Button onClick={getNextPage}>Next page</Button>
     </Container>
   );
 };

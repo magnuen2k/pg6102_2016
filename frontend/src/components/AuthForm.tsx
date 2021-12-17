@@ -76,19 +76,22 @@ const AuthForm = () => {
 
   return (
     <Container>
-      <h1>Authentication</h1>
+      <h1 className="mt-4 mb-4">Authentication</h1>
 
       <Form>
         <Form.Text>{isSignup ? "Sign up" : "Login"}</Form.Text>
         <FormControl type={"text"} name={"userId"} onChange={handleChange} />
         <FormControl
+          className="mt-2"
           type={"password"}
           name={"password"}
           onChange={handleChange}
         />
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button className="mt-3" onClick={handleSubmit}>
+          {isSignup ? "Sign Up" : "Login"}
+        </Button>
       </Form>
-      <Button id="switch" onClick={switchMode}>
+      <Button className="mt-3" id="switch" onClick={switchMode}>
         {isSignup
           ? "Already have an account? Sign In"
           : "Dont have an account yet? Sign Up"}

@@ -9,4 +9,5 @@ export interface ITrip {
   crew: number;
   passengers: number;
   tripYear: number;
+  status: string;
 }

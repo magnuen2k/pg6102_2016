@@ -8,8 +8,14 @@ const Home = () => {
 
   return (
     <Container>
-      {user ? <p>Welcome, {user.name}</p> : <p>You need to log in to book</p>}
-      <p>HOME</p>
+      {user ? (
+        <h3 className="mt-5">Welcome, {user.name}</h3>
+      ) : (
+        <h3 className="mt-5">Sign in to get started</h3>
+      )}
+      <p className="mt-3">
+        On this page you can plan, book and see your trips.
+      </p>
     </Container>
   );
 };
