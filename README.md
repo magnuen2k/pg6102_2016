@@ -51,9 +51,9 @@ R5:
 
 ## Exam Topic
 
-When interpreting the topic for this exam, I stumbled upon a few logical issues I can't understand. Therefore, I am discussing how I interpreted and made the application on each of the topic points.  
+When interpreting the topic for this exam, I stumbled upon a few logical issues I can't understand. In my opinion, some requirements does not work together. Therefore, I am discussing how I interpreted and made the application on each of the topic points.  
 
-##### T1: Necessary but not sufficient requirements for E
+### T1: Necessary but not sufficient requirements for E
 - `REST API to handle keeping track of planned trips: ports of origin and destination, boat and crew for each, and statuses for each trip.`
 
 - I interpret this as making a new REST API for handling `trips`. I also made entities in this API for `boats` and `ports`.
@@ -67,7 +67,7 @@ When interpreting the topic for this exam, I stumbled upon a few logical issues 
 - Everything is covered.
 
 
-##### T2: Necessary but not sufficient requirements for C
+### T2: Necessary but not sufficient requirements for C
 - `REST API to handle the creation of new trips.`
 
 - Handling creation of new trips can mean a lot of things. As specified in T3, this API is listening for when a trip is created (assumed to be the `trips` API from T1). Handling this can mean initializing data when this happens.
@@ -85,7 +85,7 @@ When interpreting the topic for this exam, I stumbled upon a few logical issues 
 - Everything is covered.
 
 
-##### T3: Necessary but not sufficient requirements for B
+### T3: Necessary but not sufficient requirements for B
 - `Every time a new trip is added to the API, this relevant service should do a broadcast with AMQP. Then, the API in T2 should listen to such event, and initialize all the needed data for booking that trip.`
 
 - This is not specific at all, but I read this as `trips` API is notifying T2 API when a new trip is added.
@@ -94,7 +94,7 @@ When interpreting the topic for this exam, I stumbled upon a few logical issues 
 
 - I read this as a `weather` api running and sending a message via AMQP when the weather changes. `trips` API should listen for this all ports should fetch new weather status. It is specified that a trip has weather status, so I read this as having the weather status of the destination port on the trip itself.
 
-##### T4: Necessary but not sufficient requirements for A
+### T4: Necessary but not sufficient requirements for A
 - `Build frontend GUI`
 
 - `Should be able to see trips associated with a port (either as origin or destination) or with a boat.`
@@ -123,6 +123,10 @@ Every functionality is tested from frontend and runs smoothly on my machine. All
 
 ## Known bugs
 While developing I sometimes wasn't able to see the trip I added instantly.
+
+
+## Docker note:
+- As I had alot of docker images and containers on my machine, some services such as `postgres` started to exit. Cleaning docker images, containers and volumes did the job.
 
 ## Credits
 
