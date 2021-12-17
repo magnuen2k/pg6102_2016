@@ -74,7 +74,6 @@ class TripService (
         }
 
         val jsonList = Gson().toJson(trips)
-        log.info(jsonList)
 
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
@@ -95,8 +94,6 @@ class TripService (
                 null
             }
         ) ?: return null
-
-        log.info("RESPONSE")
 
         if(response.statusCodeValue != 200) {
             log.error("There was an error fetching the data")
