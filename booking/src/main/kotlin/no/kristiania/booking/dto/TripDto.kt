@@ -25,9 +25,5 @@ class TripDto (
     var tripYear: Int? = null,
 
     @ApiModelProperty("")
-    var status: Status? = null
+    var status: String? = null
 )
-
-enum class Status {
-    WARNING,
-}
