@@ -5,23 +5,19 @@ import org.springframework.stereotype.Service
 @Service
 class WeatherService {
 
-    private var test: Int = 0
-
     fun getWeatherStatus(port: String) : String {
 
-        test += 1
+        val r = (1..100).random()
 
-        if(test > 4) {
-            test = 1
-        }
-
-        if(test == 1) {
+        if(r >= 50) {
             return WeatherStatus.NORMAL.toString()
         }
-        if(test == 2) {
+
+        if(r in 70 downTo 49) {
             return WeatherStatus.WARNING.toString()
         }
-        if(test == 3) {
+
+        if(r in 71..85) {
             return WeatherStatus.RISKY.toString()
         }
 
