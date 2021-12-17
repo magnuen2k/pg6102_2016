@@ -135,7 +135,10 @@ While developing I sometimes wasn't able to see the trip I added instantly.
 
 ## Credits
 
-All copied code from class is credited in the source files.
+All copied code from class is credited in the source files. 
+
+Rest-dto module is fully copied from class.
+- https://github.com/bogdanmarculescu/testing_security_development_enterprise_systems/tree/master/advanced/rest/rest-dto
 
 ## Final Note
 

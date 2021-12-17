@@ -10,6 +10,9 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 
+
+// Code copied from class, but modified to fit
+
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig: WebSecurityConfigurerAdapter() {
