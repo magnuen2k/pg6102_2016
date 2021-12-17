@@ -9,7 +9,7 @@ class WeatherService {
 
         val r = (1..100).random()
 
-        if(r >= 50) {
+        if(r <= 50) {
             return WeatherStatus.NORMAL.toString()
         }
 
