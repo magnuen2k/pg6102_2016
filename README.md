@@ -36,6 +36,11 @@ Run `e2e-tests`:
 
 I did R1, R2, R3, R4 and R5.
 
+R3:
+Auth is adapted from class code:
+
+- https://github.com/bogdanmarculescu/testing_security_development_enterprise_systems/tree/master/advanced/exercise-solutions/card-game/part-09/auth
+
 R4:
 
 - I used AMQP to notify `booking` api about trip creation and weather changes. Verification of AMQP is covered by e2e-test: `testCreateTripAndVerifyAMQPOnBookingService()`. 
