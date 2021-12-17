@@ -4,7 +4,7 @@
 
 Run API's independently:
 
-- All API's can be started independently from and IDE with `LocalApplicationRunner` which is located under the API's test folder. However, since both `trips` api and `booking` api depends on rabbitmq, they will not be able to run without disabling the rabbitmq functionality. Therefore, another way to see Swagger Documentation is to expose unique ports for each service in `docker-compose.yml` and open that way. 
+- All API's can be started independently from and IDE with `LocalApplicationRunner` which is located under the API's test folder. However, since both `trips` api and `booking` api depends on rabbitmq etc, they will throw exceptions. However, there is a bug (I guess?) where the `@Value` does not work properly when running `LocalApplicationRunner` so they crash due to this. You could remove the @Value property in `application.yml` and hardcode the string (just to see swagger, tests will not work then). There is another way to see Swagger Documentation and that is to expose unique ports for each service in `docker-compose.yml` and open that way. `weather` api swagger works properly.
 
 Run the full application:
 
