@@ -3,9 +3,9 @@ package no.kristiania.booking.dto
 import io.swagger.annotations.ApiModelProperty
 
 class PortDto (
-    @ApiModelProperty("")
+    @ApiModelProperty("Port name")
     var name: String? = null,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Max boats on port")
     var maxBoats: Int? = 0
 )

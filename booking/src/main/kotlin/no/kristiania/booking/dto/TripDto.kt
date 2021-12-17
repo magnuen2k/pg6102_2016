@@ -6,24 +6,24 @@ class TripDto (
     @ApiModelProperty("Id of the trip")
     var tripId: Long? = 0L,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Origin port of trip")
     var origin: PortDto? = null,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Destination port of trip")
     var destination: PortDto? = null,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Boat of trip")
     var boat: BoatDto? = null,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Crew on trip")
     var crew: Int? = 0,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Passengers on trip")
     var passengers: Int? = 0,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Year of trip")
     var tripYear: Int? = null,
 
-    @ApiModelProperty("")
+    @ApiModelProperty("Weather status of trip")
     var status: String? = null
 )

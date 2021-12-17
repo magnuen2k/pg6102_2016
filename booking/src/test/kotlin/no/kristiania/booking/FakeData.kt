@@ -4,6 +4,7 @@ import no.kristiania.booking.dto.BoatDto
 import no.kristiania.booking.dto.PortDto
 import no.kristiania.booking.dto.TripDto
 
+// Copied from class, but modified to fit
 object FakeData {
     fun getTripDtos() : List<TripDto> {
 

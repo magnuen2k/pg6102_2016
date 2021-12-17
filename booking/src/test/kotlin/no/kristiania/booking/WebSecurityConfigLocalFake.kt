@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint
 
+// Copied from class
 @Configuration
 @EnableWebSecurity
 @Order(1)
